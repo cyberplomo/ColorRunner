@@ -1,25 +1,63 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float rotationSpeed = 5.0f; // Dönme hızı
-    public float moveSpeed = 5.0f; // Hareket hızı
+    private Rigidbody rb;
+    private float jumpForce;
 
-    void Update()
+    [SerializeField] private Joystick joystick;
+
+    [SerializeField] private float forwardSpeed;
+    [SerializeField] private float leftrightSpeed;
+    [SerializeField] private Vector2 minMaxX;
+    [SerializeField] private Vector2 minMaxY;
+
+    private void Awake()
     {
-        // Fare sol tuşuna basıldığında yön değiştirme
-        if (Input.GetMouseButton(0))
+        rb = GetComponent<Rigidbody>();
+        // Joystick'in null olup olmadığını kontrol et
+        if (joystick == null)
         {
-            float mouseX = Input.GetAxis("Mouse X");
-            transform.Rotate(Vector3.up * mouseX * rotationSpeed);
+            Debug.LogError("Joystick not assigned to PlayerMovement script!");
+        }
+    }
+
+    private void Update()
+    {
+        ApplyGravity();
+        HandleMovement();
+    }
+
+    private void HandleMovement()
+    {
+        if (joystick == null)
+        {
+            return; // Joystick null ise işlemi geç
         }
 
-        // Sadece sol tuşa basılı tutulduğunda ileriye doğru hareket etme
-        if (Input.GetMouseButton(0))
-        {
-            // Karakterin otomatik olarak ileriye gitmesi
-            Vector3 forwardMovement = transform.TransformDirection(Vector3.forward);
-            transform.Translate(forwardMovement * moveSpeed * Time.deltaTime);
-        }
+        float horizontalMovement = joystick.Horizontal * leftrightSpeed * Time.deltaTime;
+        float forwardMovement = forwardSpeed * Time.deltaTime;
+
+        Vector3 newPosition = new Vector3(
+            Mathf.Clamp(transform.position.x, minMaxX.x, minMaxX.y),
+            transform.position.y,
+            transform.position.z
+        );
+
+        rb.velocity = new Vector3(horizontalMovement, jumpForce, forwardMovement);
+        transform.position = newPosition;
+    }
+
+    public void Jump()
+    {
+        jumpForce = 5f;
+    }
+
+    private void ApplyGravity()
+    {
+        bool isGrounded = Physics.Raycast(transform.position, Vector3.down, 1);
+
+        Physics.gravity = isGrounded ? new Vector3(0, -9.81f, 0) : new Vector3(0, -100f, 0);
     }
 }
