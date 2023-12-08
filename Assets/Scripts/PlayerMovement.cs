@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -6,12 +5,11 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private float jumpForce;
 
-    [SerializeField] private Joystick Handle;
-
-    [SerializeField] private float forwardSpeed;
+    [SerializeField] private Joystick handle;
     [SerializeField] private float leftrightSpeed;
+    [SerializeField] private float forwardSpeed;
+    [SerializeField] private float maxForwardSpeed;
     [SerializeField] private Vector2 minMaxX;
-    [SerializeField] private Vector2 minMaxY;
 
     private void Awake()
     {
@@ -26,17 +24,29 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        float horizontalMovement = Handle.Horizontal * leftrightSpeed * Time.deltaTime;
-        float forwardMovement = forwardSpeed * Time.deltaTime;
+        if (handle == null)
+        {
+            return;
+        }
 
-        Vector3 newPosition = new Vector3(
-            Mathf.Clamp(transform.position.x, minMaxX.x, minMaxX.y),
-            transform.position.y,
-            transform.position.z
-        );
+        float horizontalMovement = handle.Horizontal * leftrightSpeed * Time.deltaTime;
+        float forwardMovement = handle.Vertical * forwardSpeed * Time.deltaTime;
 
-        rb.velocity = new Vector3(horizontalMovement, jumpForce, forwardMovement);
-        transform.position = newPosition;
+        // Yatay konumu sınırla
+        float newXPosition = Mathf.Clamp(transform.position.x + horizontalMovement, minMaxX.x, minMaxX.y);
+
+        // Yeni konumu uygula
+        rb.MovePosition(new Vector3(newXPosition, transform.position.y, transform.position.z));
+
+        // Sadece yatay eksende ve pozitif y ekseninde hareket ettiğinde hızı ayarla
+        if (handle.Vertical > 0)
+        {
+            rb.velocity = new Vector3(0, jumpForce, Mathf.Clamp(forwardMovement, 0, maxForwardSpeed));
+        }
+        else
+        {
+            rb.velocity = new Vector3(0, jumpForce, 0);
+        }
     }
 
     public void Jump()
