@@ -16,11 +16,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        // Joystick'in null olup olmadığını kontrol et
-        if (joystick == null)
-        {
-            Debug.LogError("Joystick not assigned to PlayerMovement script!");
-        }
     }
 
     private void Update()
@@ -31,11 +26,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        if (joystick == null)
-        {
-            return; // Joystick null ise işlemi geç
-        }
-
         float horizontalMovement = joystick.Horizontal * leftrightSpeed * Time.deltaTime;
         float forwardMovement = forwardSpeed * Time.deltaTime;
 
@@ -60,4 +50,13 @@ public class PlayerMovement : MonoBehaviour
 
         Physics.gravity = isGrounded ? new Vector3(0, -9.81f, 0) : new Vector3(0, -100f, 0);
     }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("SwitchColor"))
+        {
+            // Karakter, renk değiştiren nesne ile etkileşime geçti.
+            // Burada renk değiştirme işlemini gerçekleştirebilirsiniz.
+        }
+    }
+
 }
