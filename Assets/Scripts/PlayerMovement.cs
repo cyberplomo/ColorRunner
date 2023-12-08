@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private float jumpForce;
 
-    [SerializeField] private Joystick joystick;
+    [SerializeField] private Joystick Handle;
 
     [SerializeField] private float forwardSpeed;
     [SerializeField] private float leftrightSpeed;
@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        float horizontalMovement = joystick.Horizontal * leftrightSpeed * Time.deltaTime;
+        float horizontalMovement = Handle.Horizontal * leftrightSpeed * Time.deltaTime;
         float forwardMovement = forwardSpeed * Time.deltaTime;
 
         Vector3 newPosition = new Vector3(
