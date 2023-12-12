@@ -15,16 +15,6 @@ public class RunnerController : MonoBehaviour
             coinCount++;
             UpdateCharacterCount(); // Karakter sayısını güncelle
         }
-        
-        if (other.CompareTag("Collectitem"))
-        {
-            Debug.Log("Coin collected!");
-            Destroy(other.gameObject); // Coin'i yok et, isteğe bağlı
-            coinCount++;
-            UpdateCharacterCount(); // Karakter sayısını güncelle
-            Debug.Log("Karakter sayısını güncelle");
-        }
-        
     }
 
     private void UpdateCharacterCount()
@@ -35,7 +25,7 @@ public class RunnerController : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // Yeni karakterleri oluştur
+        // Yeni karakterleri Instantiate kullanarak oluştur
         for (int i = 0; i < coinCount; i++)
         {
             Vector3 spawnPosition = new Vector3(0, 0, i * cloneDistance);
@@ -43,5 +33,4 @@ public class RunnerController : MonoBehaviour
             characterClone.transform.parent = transform; // Ana karakterin altında klonu oluştur
         }
     }
-    
 }
