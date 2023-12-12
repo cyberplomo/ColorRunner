@@ -1,30 +1,39 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-
 public class CharacterFollower : MonoBehaviour
 {
-    public Transform target; // Takip edilecek karakterin transformu
-    private LineRenderer lineRenderer;
+    public Transform target;
+    public LineRenderer followerLineRenderer;
+    public float forwardSpeed = 5f;
+    public float lateralSpeed = 5f;
 
     void Start()
     {
-        lineRenderer = GetComponent<LineRenderer>();
-        if (lineRenderer == null)
-        {
-            Debug.LogError("Line Renderer component not found!");
-        }
-
-        lineRenderer.positionCount = 2;
+        followerLineRenderer.positionCount = 0;
     }
 
-    void Update()
+    void FixedUpdate()
     {
+
+        followerLineRenderer.positionCount = 0;
+
+
         if (target != null)
         {
-            // İlk nokta, takip eden karakterin pozisyonu
-            lineRenderer.SetPosition(0, transform.position);
 
-            // İkinci nokta, takip edilen karakterin pozisyonu
-            lineRenderer.SetPosition(1, target.position);
+            Vector3 currentPosition = transform.position;
+            followerLineRenderer.positionCount++;
+            followerLineRenderer.SetPosition(followerLineRenderer.positionCount - 1, currentPosition);
+
+
+            float step = forwardSpeed * Time.deltaTime; 
+            Vector3 targetPosition = new Vector3(target.position.x, transform.position.y, target.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+
+            float horizontalStep = lateralSpeed * Time.deltaTime;
+            float horizontalInput = Input.GetAxis("Horizontal");
+            transform.Translate(Vector3.right * (horizontalInput * horizontalStep), Space.World);
         }
     }
-} 
+}

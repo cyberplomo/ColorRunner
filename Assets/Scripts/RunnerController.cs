@@ -1,36 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-
-public class RunnerController : MonoBehaviour
+public class RunnerController : MonoBehaviour 
 {
-    public GameObject characterPrefab;
-    public float cloneDistance = 2.0f; // Karakterler arasındaki mesafe
+    public string characterPrefabPath = "Prefabs/CharacterPrefab"; // Prefab'ın Resources içindeki yolu
+    public Transform spawnPoint;
 
-    private int coinCount = 0;
+    private int characterCount = 1;
+    private List<GameObject> CharacterFollower = new List<GameObject>();
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Collectitem"))
-        {
-            Destroy(other.gameObject); // Coin'i yok et, isteğe bağlı
-            coinCount++;
-            UpdateCharacterCount(); // Karakter sayısını güncelle
+    void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Collectitem")) {
+            Destroy(other.gameObject);
+            characterCount++;
+            AddCharacterToFollower();
         }
     }
 
-    private void UpdateCharacterCount()
-    {
-        // Önceki karakterleri temizle
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
+    void AddCharacterToFollower() {
+        GameObject characterPrefab = Resources.Load<GameObject>(characterPrefabPath);
+        GameObject newCharacter = Instantiate(characterPrefab, spawnPoint.position, spawnPoint.rotation);
+        CharacterFollower.Add(newCharacter);
 
-        // Yeni karakterleri Instantiate kullanarak oluştur
-        for (int i = 0; i < coinCount; i++)
-        {
-            Vector3 spawnPosition = new Vector3(0, 0, i * cloneDistance);
-            GameObject characterClone = Instantiate(characterPrefab, spawnPosition, Quaternion.identity);
-            characterClone.transform.parent = transform; // Ana karakterin altında klonu oluştur
-        }
+        // Yeni karakteri bir öncekine bağla
+        
+            if (CharacterFollower.Count > 1)
+            {
+                newCharacter.GetComponent<CharacterFollower>().SetTarget(CharacterFollower[CharacterFollower.Count - 2].transform);
+            }
+        
     }
 }
