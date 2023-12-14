@@ -1894,18 +1894,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &2043470955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8164078558789367566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e780bf3440c0a44182c15a4a4f073e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2045403066
 GameObject:
   m_ObjectHideFlags: 0
@@ -2367,8 +2355,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1151388028591924277}
   followerLineRenderer: {fileID: 2043470954}
-  forwardSpeed: 5
-  lateralSpeed: 5
+  forwardSpeed: 2
+  lateralSpeed: 2
 --- !u!114 &4986116747213037478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2527,7 +2515,7 @@ GameObject:
   - component: {fileID: 2043470944}
   - component: {fileID: 2043470945}
   - component: {fileID: 2043470949}
-  - component: {fileID: 2043470955}
+  - component: {fileID: 8164078558789367567}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2535,3 +2523,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8164078558789367567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8164078558789367566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc6d5225ac2c7e541a4484f407fb2f91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterPrefabPath: Prefabs/CharacterPrefab
+  spawnPoint: {fileID: 4288572252697152664}
