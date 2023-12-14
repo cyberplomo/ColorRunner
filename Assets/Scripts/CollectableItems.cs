@@ -4,18 +4,40 @@ using UnityEngine;
 
 public class CollectableItems : MonoBehaviour
 {
-    private int Stick = 0;
+    private Color characterColor; // Karakterin rengini saklamak için değişken
+    private int collectedItems = 0;
 
-	private void OnTriggerEnter(Collider other)
-	{
-		
-			if(other.transform.tag == "Collectitem")
-			{
-				Stick++;
-				Debug.Log(Stick);
-				Destroy(other.gameObject);
+    void Start()
+    {
+        // Karakterin başlangıç rengini ayarla (örneğin, rastgele bir renk atayabilirsiniz)
+        characterColor = Random.ColorHSV();
+    }
 
-			}	
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Collectitem"))
+        {
+            // Çarptığımız nesnenin rengini kontrol et
+            Color objectColor = other.GetComponent<Renderer>().material.color;
 
-	}
+            // Eğer nesnenin rengi karakterin rengine eşitse, nesneyi topla
+            if (objectColor == characterColor)
+            {
+                CollectItem(other.gameObject);
+            }
+            else
+            {
+                // Eğer renkler eşleşmiyorsa, nesneyi toplama
+                Debug.Log("Renkler eşleşmiyor!");
+            }
+        }
+    }
+
+    void CollectItem(GameObject collectedItem)
+    {
+        // Nesneyi toplama işlemleri buraya eklenir
+        Destroy(collectedItem);
+        collectedItems++;
+        Debug.Log("Toplanan Nesne Sayısı: " + collectedItems);
+    }
 }
