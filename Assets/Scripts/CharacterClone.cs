@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class CharacterClone : MonoBehaviour 
 {
-    public string characterPrefabPath = "Prefabs/CharacterPrefab";
+    public GameObject characterPrefab;
     public Transform spawnPoint;
+    public float spawnDistance = 1.0f; // Karakterler arasındaki mesafe
 
     private int characterCount = 1;
     private GameObject lastSpawnedCharacter;
@@ -20,8 +21,14 @@ public class CharacterClone : MonoBehaviour
 
     void AddCharacterToFollower() 
     {
-        GameObject characterPrefab = Resources.Load<GameObject>(characterPrefabPath);
-        GameObject newCharacter = Instantiate(characterPrefab, spawnPoint.position, spawnPoint.rotation);
+        if (characterPrefab == null)
+        {
+            Debug.LogError("Character prefab is not assigned!");
+            return;
+        }
+
+        Vector3 nextSpawnPosition = spawnPoint.position + new Vector3(0f, 0f, spawnDistance * characterCount);
+        GameObject newCharacter = Instantiate(characterPrefab, nextSpawnPosition, spawnPoint.rotation);
 
         ConnectCharacterToPrevious(newCharacter);
 

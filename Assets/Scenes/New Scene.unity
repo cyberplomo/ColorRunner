@@ -2343,8 +2343,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1151388028591924277}
   followerLineRenderer: {fileID: 2043470954}
-  forwardSpeed: 2
-  lateralSpeed: 2
+  forwardSpeed: 1.5
+  lateralSpeed: 1
 --- !u!114 &4986116747213037478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2523,8 +2523,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc6d5225ac2c7e541a4484f407fb2f91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterPrefabPath: 'Prefabs/CharacterPrefab '
+  characterPrefab: {fileID: 4986116747213037475}
   spawnPoint: {fileID: 4288572252697152664}
+  spawnDistance: -0.5
 --- !u!114 &8164078558789367568
 MonoBehaviour:
   m_ObjectHideFlags: 0
