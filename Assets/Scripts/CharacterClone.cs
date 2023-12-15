@@ -17,6 +17,10 @@ public class CharacterClone : MonoBehaviour
             characterCount++;
             AddCharacterToFollower();
         }
+        else if (other.CompareTag("Obstacle")) // "Obstacle" olarak adlandırılmış engel tag'i
+        {
+            ReduceCharacterCount();
+        }
     }
 
     void AddCharacterToFollower() 
@@ -44,6 +48,16 @@ public class CharacterClone : MonoBehaviour
             {
                 characterFollowerComponent.SetTarget(lastSpawnedCharacter.transform);
             }
+        }
+    }
+
+    void ReduceCharacterCount()
+    {
+        if (characterCount > 1)
+        {
+            characterCount--;
+            // Burada gerekirse bir önceki karakteri yok edebilir veya belirli bir işlemi gerçekleştirebilirsiniz.
+            Destroy(lastSpawnedCharacter);
         }
     }
 }
