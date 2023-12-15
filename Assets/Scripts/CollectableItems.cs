@@ -25,11 +25,6 @@ public class CollectableItems : MonoBehaviour
             {
                 CollectItem(other.gameObject);
             }
-            else
-            {
-                // Eğer renkler eşleşmiyorsa, nesneyi toplama
-                Debug.Log("Renkler eşleşmiyor!");
-            }
         }
     }
 

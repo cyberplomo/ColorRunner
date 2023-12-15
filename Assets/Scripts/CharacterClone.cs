@@ -1,29 +1,33 @@
 using UnityEngine;
 
-public class CharacterClone : MonoBehaviour 
+public class CharacterClone : MonoBehaviour
 {
     public GameObject characterPrefab;
     public Transform spawnPoint;
     public float spawnDistance = 1.0f; // Karakterler arasındaki mesafe
+    public Transform mergeZone; // Birleşme bölgesi
 
     private int characterCount = 1;
     private GameObject lastSpawnedCharacter;
 
-    void OnTriggerEnter(Collider other) 
+    void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Collectitem")) 
+        if (other.CompareTag("Collectitem"))
         {
             Destroy(other.gameObject);
-            characterCount++;
             AddCharacterToFollower();
         }
-        else if (other.CompareTag("Obstacle")) // "Obstacle" olarak adlandırılmış engel tag'i
+        else if (other.CompareTag("Obstacle"))
         {
             ReduceCharacterCount();
         }
+        else if (other.CompareTag("MergeZone"))
+        {
+            MergeCharacters();
+        }
     }
 
-    void AddCharacterToFollower() 
+    void AddCharacterToFollower()
     {
         if (characterPrefab == null)
         {
@@ -31,7 +35,7 @@ public class CharacterClone : MonoBehaviour
             return;
         }
 
-        Vector3 nextSpawnPosition = spawnPoint.position + new Vector3(0f, 0f, spawnDistance * characterCount);
+        Vector3 nextSpawnPosition = spawnPoint.position + new Vector3(0f, 0f, spawnDistance);
         GameObject newCharacter = Instantiate(characterPrefab, nextSpawnPosition, spawnPoint.rotation);
 
         ConnectCharacterToPrevious(newCharacter);
@@ -39,7 +43,7 @@ public class CharacterClone : MonoBehaviour
         lastSpawnedCharacter = newCharacter;
     }
 
-    void ConnectCharacterToPrevious(GameObject newCharacter) 
+    void ConnectCharacterToPrevious(GameObject newCharacter)
     {
         if (lastSpawnedCharacter != null)
         {
@@ -53,11 +57,32 @@ public class CharacterClone : MonoBehaviour
 
     void ReduceCharacterCount()
     {
-        if (characterCount > 1)
+        if (lastSpawnedCharacter != null)
         {
             characterCount--;
-            // Burada gerekirse bir önceki karakteri yok edebilir veya belirli bir işlemi gerçekleştirebilirsiniz.
             Destroy(lastSpawnedCharacter);
+
+            if (characterCount == 0)
+            {
+                MergeCharacters();
+            }
         }
+    }
+
+    void MergeCharacters()
+    {
+        // Tüm karakterlerin birleşme bölgesindeki pozisyonunu al
+        Vector3 mergePosition = mergeZone.position;
+
+        // Tüm karakterleri birleşme bölgesine taşı ve birleştir
+        CharacterFollower[] followers = GetComponentsInChildren<CharacterFollower>();
+        foreach (CharacterFollower follower in followers)
+        {
+            follower.transform.position = mergePosition;
+            follower.transform.localScale *= 2f; // Karakterleri büyüt
+        }
+
+        // Oyunun sonunu ilan et
+        Debug.Log("Oyun bitti! Tüm karakterler birleşti ve büyüdü.");
     }
 }

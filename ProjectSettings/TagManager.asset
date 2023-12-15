@@ -6,6 +6,8 @@ TagManager:
   tags:
   - SwitchColor
   - Collectitem
+  - Obstacle
+  - MergeZone
   layers:
   - Default
   - TransparentFX
