@@ -8,6 +8,9 @@ TagManager:
   - Collectitem
   - Obstacle
   - MergeZone
+  - PlayerClone
+  - Turret
+  - Bullet
   layers:
   - Default
   - TransparentFX
