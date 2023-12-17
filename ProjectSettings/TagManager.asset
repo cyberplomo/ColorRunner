@@ -11,6 +11,10 @@ TagManager:
   - PlayerClone
   - Turret
   - Bullet
+  - Drone
+  - Red
+  - Green
+  - purple
   layers:
   - Default
   - TransparentFX
